@@ -1,0 +1,28 @@
+def max_subarray_with_constraint(arr, constraint):
+    n = len(arr)
+    best_sum = 0
+    best_subarray = []
+
+    left = 0
+    current_sum = 0
+
+    for right in range(n):
+        current_sum += arr[right]
+        while current_sum &gt; constraint and left &lt;= right:
+            current_sum -= arr[left]
+            left += 1
+        if current_sum &lt;= constraint and current_sum &gt; best_sum:
+            best_sum = current_sum
+            best_subarray = arr[left:right+1]
+
+    return best_sum, best_subarray
+
+resources = [1, 2, 3]
+constraint = 0
+result_sum, result_subarray = max_subarray_with_constraint(resources, constraint)
+print(&quot;Zero Constraint Test Case:&quot;)
+if not result_subarray:
+    print(&quot;No feasible subarray.&quot;)
+else:
+    print(&quot;Maximum Subarray Sum:&quot;, result_sum)
+    print(&quot;Subarray:&quot;, result_subarray)
