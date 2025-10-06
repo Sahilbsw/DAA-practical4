@@ -1,0 +1,41 @@
+def max_crossing_subarray(arr, left, mid, right):
+    total = 0
+    left_sum = float(&#39;-inf&#39;)
+    max_left = mid
+    for i in range(mid, left - 1, -1):
+        total += arr[i]
+        if total &gt; left_sum:
+            left_sum = total
+            max_left = i
+
+    total = 0
+    right_sum = float(&#39;-inf&#39;)
+    max_right = mid
+
+    for i in range(mid + 1, right + 1):
+        total += arr[i]
+        if total &gt; right_sum:
+            right_sum = total
+            max_right = i
+
+    return left_sum + right_sum, arr[max_left:max_right + 1]
+
+def max_subarray(arr, left, right):
+    if left == right:
+        return arr[left], [arr[left]]
+    mid = (left + right) // 2
+    left_sum, left_sub = max_subarray(arr, left, mid)
+    right_sum, right_sub = max_subarray(arr, mid + 1, right)
+    cross_sum, cross_sub = max_crossing_subarray(arr, left, mid, right)
+    if left_sum &gt;= right_sum and left_sum &gt;= cross_sum:
+        return left_sum, left_sub
+    elif right_sum &gt;= left_sum and right_sum &gt;= cross_sum:
+        return right_sum, right_sub
+    else:
+        return cross_sum, cross_sub
+
+basic_array = [2, -4, 3, -1, 5, -6]
+n = len(basic_array)
+max_sum, subarray = max_subarray(basic_array, 0, n - 1)
+print(&quot;Maximum Subarray Sum is:&quot;, max_sum)
+print(&quot;Subarray is:&quot;, subarray)
